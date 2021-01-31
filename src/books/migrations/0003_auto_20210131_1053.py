@@ -5,6 +5,8 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
+    atomic = False
+
     dependencies = [
         ('books', '0002_auto_20210131_1050'),
     ]
