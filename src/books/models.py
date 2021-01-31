@@ -7,22 +7,18 @@ class Autors(models.Model):
     )
     last_name = models.CharField(
         verbose_name = "Last name",
-        max_length=30,
-        null=True,
-        blank=True
+        max_length=30
     )
     date_of_birth = models.DateField(
         verbose_name = "Autor's date of birth",
         auto_now=False,
-        auto_now_add=False,
-        null=True,
-        blank=True
+        auto_now_add=False
     )
 
     address = models.ForeignKey(
         'Addresses',
         verbose_name = "Autor's address",
-        on_delete=models.DO_NOTHING
+        on_delete=models.CASCADE
     )
 
     class Meta:
@@ -36,7 +32,7 @@ class Addresses(models.Model):
     city = models.ForeignKey(
         'Cities',
         verbose_name = "City",
-        on_delete=models.DO_NOTHING
+        on_delete=models.CASCADE
     )
 
     street = models.TextField(
@@ -93,7 +89,7 @@ class Publishers(models.Model):
     address = models.ForeignKey(
         'Addresses',
         verbose_name = "Autor's address",
-        on_delete=models.DO_NOTHING
+        on_delete=models.CASCADE
     )
 
     class Meta:
