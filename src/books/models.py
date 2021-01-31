@@ -3,9 +3,7 @@ from django.db import models
 class Autors(models.Model):
     first_name = models.CharField(
         verbose_name = "First name",
-        max_length=30,
-        null=True,
-        blank=True
+        max_length=30
     )
     last_name = models.CharField(
         verbose_name = "Last name",
@@ -95,9 +93,7 @@ class Publishers(models.Model):
     address = models.ForeignKey(
         'Addresses',
         verbose_name = "Autor's address",
-        on_delete=models.DO_NOTHING,
-        null=True,
-        blank=True
+        on_delete=models.DO_NOTHING
     )
 
     class Meta:
