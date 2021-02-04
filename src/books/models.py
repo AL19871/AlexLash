@@ -16,9 +16,10 @@ class Autors(models.Model):
     )
 
     address = models.ForeignKey(
-        'Addresses',
+        'books.Addresses',
         verbose_name = "Autor's address",
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name = 'autors'
     )
 
     class Meta:
@@ -30,9 +31,10 @@ class Autors(models.Model):
 
 class Addresses(models.Model):
     city = models.ForeignKey(
-        'Cities',
+        'books.Cities',
         verbose_name = "City",
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name = 'addresses'
     )
 
     street = models.TextField(
@@ -87,9 +89,10 @@ class Publishers(models.Model):
         max_length=50
     )
     address = models.ForeignKey(
-        'Addresses',
-        verbose_name = "Autor's address",
-        on_delete=models.CASCADE
+        'books.Addresses',
+        verbose_name = "Publisher's address",
+        on_delete = models.CASCADE,
+        related_name = 'publishers'
     )
 
     class Meta:
