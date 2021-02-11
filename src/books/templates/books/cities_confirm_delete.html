@@ -6,7 +6,10 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Hello last city</h1>
-    {{ city.pk }} | {{ city.name }}<br>
+    <h1>Delete city!</h1>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <button>Are you sure?</button>
+    </form>
 </body>
 </html>

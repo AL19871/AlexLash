@@ -60,7 +60,7 @@ class Addresses(models.Model):
 class Cities(models.Model):
     name = models.CharField(
         verbose_name = "City's name",
-        max_length=50
+        max_length = 50
     )
 
     class Meta:

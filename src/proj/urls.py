@@ -15,9 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from books.views import home_page
+from books import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home_page)
+    path('cities/', views.CityList.as_view(), name = 'cities-list'),
+    path('cities-detail/<int:pk>/', views.CityDetail.as_view(), name = 'city-detail'),
+    path('cities-delete/<int:pk>/', views.CityDelete.as_view(), name = 'city-delete'),
+    path('cities-create/', views.CityCreate.as_view(), name = 'city-create'),
+    path('cities-update/<int:pk>/', views.CityUpdate.as_view(), name = 'city-update')
 ]
