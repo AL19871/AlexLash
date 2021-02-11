@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table border="1">
+        <tr>
+            <td>#</td>
+            <td>last_name</td>
+            <td>first_name</td>
+            <td>date_of_birth</td>
+            <td>address</td>
+        </tr>
+        {% for autor in object_list %}
+            <tr>
+                <td>{{ autor.pk }}</td>
+                <td><a href="{% url 'autor-detail' autor.pk %}">{{ autor.last_name }} {{autor.first_name}}</a></td>
+                <td>{{ autor.first_name }}</td>
+                <td>{{ autor.date_of_birth }}</td>
+                <td>{{ autor.address }}</td>
+                <td><a href="{% url 'autor-update' autor.pk %}">Update</a></td>
+                <td><a href="{% url 'autor-delete' autor.pk %}">Delete</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <a href="{% url 'autor-create' %}">Add autor</a><br>
+    <a href="{% url 'books-list' %}">Home</a>
+</body>
+</html>

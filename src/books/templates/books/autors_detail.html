@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Autor name {{ object.last_name }} {{ object.first_name }}</h1>
+    Autor date of birthday {{ object.date_of_birth }}<br>
+    Autor address {{ object.address }}<br>
+    <a href="{% url 'autors-list' %}">All autors</a><br>
+    <h2></h2>
+</body>
+</html>

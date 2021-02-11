@@ -6,11 +6,10 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Update city</h1>
+    <h1>Delete publisher!</h1>
     <form action="" method="POST">
-        {% csfr_token %}
-        {{ form.as_table}}
-        <button>Update</button>
+        {% csrf_token %}
+        <button>Are you sure?</button>
     </form>
 </body>
 </html>

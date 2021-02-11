@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table border="1">
+        <tr>
+            <td>#</td>
+            <td>name</td>
+        </tr>
+        {% for genre in object_list %}
+            <tr>
+                <td>{{genre.pk}}</td>
+                <td><a href="{% url 'genre-detail' genre.pk %}">{{ genre.name }}</a></td>
+                <td><a href="{% url 'genre-update' genre.pk %}">Update</a></td>
+                <td><a href="{% url 'genre-delete' genre.pk %}">Delete</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <a href="{% url 'genre-create' %}">Add genre</a><br>
+    <a href="{% url 'books-list' %}">Home</a>
+</body>
+</html>

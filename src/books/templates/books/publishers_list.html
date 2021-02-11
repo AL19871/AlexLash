@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table border="1">
+        <tr>
+            <td>#</td>
+            <td>name</td>
+            <td>addresses</td>
+        </tr>
+        {% for publisher in object_list %}
+            <tr>
+                <td>{{publisher.pk}}</td>
+                <td><a href="{% url 'publisher-detail' publisher.pk %}">{{ publisher.name }}</a></td>
+                <td><a href="{% url 'publisher-update' publisher.pk %}">Update</a></td>
+                <td><a href="{% url 'publisher-delete' publisher.pk %}">Delete</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <a href="{% url 'publisher-create' %}">Add publisher</a><br>
+    <a href="{% url 'books-list' %}">Home</a>
+</body>
+</html>
