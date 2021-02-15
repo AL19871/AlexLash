@@ -1,24 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <table border="1">
-        <tr>
-            <td>references</td>
-        </tr>
-        <tr>
-            <td><a href="{% url 'autors-list' %}">Autors</a></td>
-        </tr>
-        <tr>
-            <td><a href="{% url 'genres-list' %}">Genres</a></td>
-        </tr>
-        <tr>
-            <td><a href="{% url 'publishers-list' %}">Publishers</a></td>
-        </tr>
-    </table>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %} Home page {% endblock title %}
+
+{% block main_body %}
+
+{% endblock main_body %}

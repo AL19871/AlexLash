@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %} Genres {% endblock title %}
+
+{% block main_body %}
     <h1>Genre name {{ object.name }}</h1>
-    <a href="{% url 'genres-list' %}">All genres</a><br>
-</body>
-</html>
+    <a href="{% url 'genres-list' %}"><button type="button" class="btn btn-light">All genres</button></a>
+{% endblock main_body %}

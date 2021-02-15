@@ -1,16 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %} Autors {% endblock title %}
+
+{% block main_body %}
     <h1>Update autor</h1>
     <form action="" method="POST">
-        {% csfr_token %}
-        {{ form.as_table}}
-        <button>Update</button>
+        {% csrf_token %}
+        {{ form|crispy}}
+        <button class="btn btn-dark btn-block">Update</button>
     </form>
-</body>
-</html>
+{% endblock main_body %}

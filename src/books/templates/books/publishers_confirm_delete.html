@@ -1,15 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Delete publisher!</h1>
+{% extends "base.html" %}
+
+{% block title %} Publishers {% endblock title %}
+
+{% block main_body %}
+    <h1>Delete publisher</h1>
     <form action="" method="POST">
         {% csrf_token %}
-        <button>Are you sure?</button>
+        <button class="btn btn-danger btn-block">Are you sure?</button>
     </form>
-</body>
-</html>
+{% endblock main_body %}
