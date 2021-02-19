@@ -20,7 +20,11 @@ from books import views
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', views.home_page, name = 'books-list'),
+    path('', views.BookList.as_view(), name = 'books-list'),
+    path('books-detail/<int:pk>/', views.BookDetail.as_view(), name = 'book-detail'),
+    path('books-delete/<int:pk>/', views.BookDelete.as_view(), name = 'book-delete'),
+    path('books-create/', views.BookCreate.as_view(), name = 'book-create'),
+    path('books-update/<int:pk>/', views.BookUpdate.as_view(), name = 'book-update'),
 
     path('autors/', views.AutorList.as_view(), name = 'autors-list'),
     path('autors-detail/<int:pk>/', views.AutorDetail.as_view(), name = 'autor-detail'),
@@ -33,6 +37,12 @@ urlpatterns = [
     path('genres-delete/<int:pk>/', views.GenreDelete.as_view(), name = 'genre-delete'),
     path('genres-create/', views.GenreCreate.as_view(), name = 'genre-create'),
     path('genres-update/<int:pk>/', views.GenreUpdate.as_view(), name = 'genre-update'),
+
+    path('series/', views.SeriaList.as_view(), name = 'series-list'),
+    path('series-detail/<int:pk>/', views.SeriaDetail.as_view(), name = 'seria-detail'),
+    path('series-delete/<int:pk>/', views.SeriaDelete.as_view(), name = 'seria-delete'),
+    path('series-create/', views.SeriaCreate.as_view(), name = 'seria-create'),
+    path('series-update/<int:pk>/', views.SeriaUpdate.as_view(), name = 'seria-update'),
 
     path('publishers/', views.PublisherList.as_view(), name = 'publishers-list'),
     path('publishers-detail/<int:pk>/', views.PublisherDetail.as_view(), name = 'publisher-detail'),

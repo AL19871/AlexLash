@@ -2,10 +2,10 @@
 
 {% load crispy_forms_tags %}
 
-{% block title %} Genres {% endblock title %}
+{% block title %} Series {% endblock title %}
 
 {% block main_body %}
-    <h1>Add genre</h1>
+    <h1>Add serie</h1>
     <form action="" method="POST">
         {% csrf_token %}
         {{ form|crispy}}

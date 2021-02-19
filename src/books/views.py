@@ -2,11 +2,30 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, DeleteView, ListView, UpdateView, CreateView
-from books.models import Autors, Genres, Publishers
+from books.models import Autors, Genres, Publishers, BooksList, Series
 
-def home_page(request):
-    context = {}
-    return render(request, template_name='home.html', context=context)
+class BookList(ListView):
+    model = BooksList
+    #return render(request, template_name='home.html', context=context)
+
+class BookDetail(DetailView):
+    model = BooksList
+
+class BookDelete(DeleteView):
+    model = BooksList
+    success_url = reverse_lazy('books-list')
+
+class BookCreate(CreateView):
+    model = BooksList
+    fields = ('name', 'image', 'cost', 'author', 'seria', 'genre', 'year_of_publishing', 'number_of_pages', 'binding', 
+        'format_of_book', 'ISBN', 'weight', 'age_restrictions', 'publisher', 'amount', 'active', 'rating')
+    success_url = reverse_lazy('books-list')
+
+class BookUpdate(UpdateView):
+    model = BooksList
+    fields = ('name', 'cost', 'amount', 'active')
+    template_name = 'bookslist_update.html'
+    success_url = reverse_lazy('books-list')
 
 class AutorDetail(DetailView):
     model = Autors
@@ -26,6 +45,7 @@ class AutorCreate(CreateView):
 class AutorUpdate(UpdateView):
     model = Autors
     fields = ('first_name', 'last_name', 'date_of_birth')
+    template_name = 'autors_update.html'
     success_url = reverse_lazy('autors-list')
 
 class GenreDetail(DetailView):
@@ -40,13 +60,35 @@ class GenreList(ListView):
 
 class GenreCreate(CreateView):
     model = Genres
-    fields = ('name', )
+    fields = ('name', 'descpiption')
     success_url = reverse_lazy('genres-list')
 
 class GenreUpdate(UpdateView):
     model = Genres
-    fields = ('name',)
+    fields = ('name', 'descpiption')
+    template_name = 'genres_update.html'
     success_url = reverse_lazy('genres-list')
+
+class SeriaDetail(DetailView):
+    model = Series
+
+class SeriaDelete(DeleteView):
+    model = Series
+    success_url = reverse_lazy('series-list')
+
+class SeriaList(ListView):
+    model = Series
+
+class SeriaCreate(CreateView):
+    model = Series
+    fields = ('name', 'descpiption')
+    success_url = reverse_lazy('series-list')
+
+class SeriaUpdate(UpdateView):
+    model = Series
+    fields = ('name', 'descpiption')
+    template_name = 'series_update.html'
+    success_url = reverse_lazy('series-list')
 
 class PublisherDetail(DetailView):
     model = Publishers
@@ -66,4 +108,5 @@ class PublisherCreate(CreateView):
 class PublisherUpdate(UpdateView):
     model = Publishers
     fields = ('name', )
+    template_name = 'publishers_update.html'
     success_url = reverse_lazy('publishers-list')

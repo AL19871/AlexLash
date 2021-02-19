@@ -2,13 +2,13 @@
 
 {% load crispy_forms_tags %}
 
-{% block title %} Genres {% endblock title %}
+{% block title %} Books {% endblock title %}
 
 {% block main_body %}
-    <h1>Add genre</h1>
+    <h1>Update book</h1>
     <form action="" method="POST">
         {% csrf_token %}
         {{ form|crispy}}
-        <button class="btn btn-primary btn-block">Add new</button>
+        <button class="btn btn-dark btn-block">Update</button>
     </form>
 {% endblock main_body %}

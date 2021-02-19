@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %} Series {% endblock title %}
+
+{% block main_body %}
+    <h1>Delete serie</h1>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <button class="btn btn-danger btn-block">Are you sure?</button>
+    </form>
+{% endblock main_body %}

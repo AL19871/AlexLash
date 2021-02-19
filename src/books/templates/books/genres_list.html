@@ -9,14 +9,16 @@
         <tr>
           <th scope="col">#</th>
           <th scope="col">name</th>
+          <th scope="col">description</th>
           <th scope="col">actions</th>
         </tr>
     </thead>
     <tbody>
     {% for genre in object_list %}
         <tr>
-            <td>{{genre.pk}}</td>
+            <td>{{ genre.pk }}</td>
             <td><a href="{% url 'genre-detail' genre.pk %}">{{ genre.name }}</a></td>
+            <td>{{ genre.description }}</td>
             <td><a href="{% url 'genre-update' genre.pk %}"><i class="far fa-edit"></i></a>
             <a href="{% url 'genre-delete' genre.pk %}"><i class="fas fa-trash"></i></a></td>
         </tr>
