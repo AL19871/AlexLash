@@ -24,7 +24,7 @@ class Autors(models.Model):
         blank = True
     )
 
-    descpiption = models.TextField(
+    description = models.TextField(
         verbose_name = "Author's description",
         max_length = 256,
         blank = True
@@ -85,7 +85,7 @@ class Genres(models.Model):
         verbose_name = "Genre's name",
         max_length = 50
     )
-    descpiption = models.TextField(
+    description = models.TextField(
         verbose_name = "Genre's description",
         max_length = 256,
         blank = True
@@ -103,7 +103,7 @@ class Series(models.Model):
         verbose_name = "Seria's name",
         max_length=50
     )
-    descpiption = models.TextField(
+    description = models.TextField(
         verbose_name = "Seria's description",
         max_length = 256,
         blank = True
@@ -129,7 +129,7 @@ class Publishers(models.Model):
         null = True,
         blank = True
     )
-    descpiption = models.TextField(
+    description = models.TextField(
         verbose_name = "Publisher's description",
         max_length = 256,
         blank = True
@@ -150,6 +150,8 @@ class BooksList(models.Model):
 
     image = models.ImageField(
         verbose_name = "Book's image",
+        null = True,
+        blank = True
     )
 
     cost = models.FloatField(
