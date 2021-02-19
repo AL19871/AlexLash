@@ -2,11 +2,11 @@ from django.db import models
 
 class Autors(models.Model):
     first_name = models.CharField(
-        verbose_name = "First name",
+        verbose_name = "Autor's first name",
         max_length=30
     )
     last_name = models.CharField(
-        verbose_name = "Last name",
+        verbose_name = "Autor's last name",
         max_length=30
     )
     date_of_birth = models.DateField(
@@ -19,12 +19,15 @@ class Autors(models.Model):
         'books.Addresses',
         verbose_name = "Autor's address",
         on_delete=models.DO_NOTHING,
-        related_name = 'autors'
+        related_name = 'autors',
+        null = True,
+        blank = True
     )
 
     descpiption = models.TextField(
-        verbose_name = "Author's descpiption",
-        max_length=256
+        verbose_name = "Author's description",
+        max_length = 256,
+        blank = True
     )
 
     class Meta:
@@ -48,7 +51,9 @@ class Addresses(models.Model):
     )
 
     block = models.PositiveSmallIntegerField(
-        verbose_name = "Block's name"
+        verbose_name = "Block's name",
+        null = True,
+        blank = True
     )
 
     house = models.PositiveSmallIntegerField(
@@ -78,11 +83,12 @@ class Cities(models.Model):
 class Genres(models.Model):
     name = models.CharField(
         verbose_name = "Genre's name",
-        max_length=50
+        max_length = 50
     )
     descpiption = models.TextField(
-        verbose_name = "Genre's descpiption",
-        max_length=256
+        verbose_name = "Genre's description",
+        max_length = 256,
+        blank = True
     )
 
     class Meta:
@@ -94,16 +100,17 @@ class Genres(models.Model):
 
 class Series(models.Model):
     name = models.CharField(
-        verbose_name = "Serie's name",
+        verbose_name = "Seria's name",
         max_length=50
     )
     descpiption = models.TextField(
-        verbose_name = "Serie's descpiption",
-        max_length=256
+        verbose_name = "Seria's description",
+        max_length = 256,
+        blank = True
     )
 
     class Meta:
-        verbose_name = 'Serie'
+        verbose_name = 'Seria'
         verbose_name_plural = 'Series'
 
     def __str__(self):
@@ -118,11 +125,14 @@ class Publishers(models.Model):
         'books.Addresses',
         verbose_name = "Publisher's address",
         on_delete = models.CASCADE,
-        related_name = 'publishers'
+        related_name = 'publishers',
+        null = True,
+        blank = True
     )
     descpiption = models.TextField(
-        verbose_name = "Publisher's descpiption",
-        max_length=256
+        verbose_name = "Publisher's description",
+        max_length = 256,
+        blank = True
     )
 
     class Meta:
@@ -135,7 +145,7 @@ class Publishers(models.Model):
 class BooksList(models.Model):
     name = models.CharField(
         verbose_name = "Book's name",
-        max_length=100
+        max_length = 100
     )
 
     image = models.ImageField(
@@ -150,19 +160,25 @@ class BooksList(models.Model):
 
     seria = models.ForeignKey(
         'books.Series',
-        verbose_name = "Book's serie",
+        verbose_name = "Book's seria",
         on_delete=models.DO_NOTHING,
-        related_name = 'bookslistserie'
+        related_name = 'bookslistserie',
+        null = True,
+        blank = True
     )
 
     genre = models.ManyToManyField(Genres)
 
     year_of_publishing = models.PositiveSmallIntegerField(
-        verbose_name = "Book's year of publishing"
+        verbose_name = "Book's year of publishing",
+        null = True,
+        blank = True
     )
 
     number_of_pages = models.PositiveSmallIntegerField(
-        verbose_name = "Book's number of pages"
+        verbose_name = "Book's number of pages",
+        null = True,
+        blank = True
     )
 
     BINDING_TYPES = (
@@ -172,7 +188,8 @@ class BooksList(models.Model):
 
     binding = models.CharField(max_length=5,
         verbose_name = "Book's binding",
-        choices = BINDING_TYPES)
+        choices = BINDING_TYPES,
+        blank = True)
 
     FORMAT_TYPES = (
         ('Extra-large', 'Extra-large'),
@@ -184,30 +201,40 @@ class BooksList(models.Model):
 
     format_of_book = models.CharField(max_length=15,
         verbose_name = "Book's format",
-        choices = FORMAT_TYPES)
+        choices = FORMAT_TYPES,
+        blank = True)
 
     ISBN = models.CharField(
         verbose_name = "Book's ISBN",
-        max_length=100
+        max_length = 100,
+        blank = True
     )
 
     weight = models.PositiveSmallIntegerField(
-        verbose_name = "Book's weight (gram)"
+        verbose_name = "Book's weight (gram)",
+        null = True,
+        blank = True
     )
 
     age_restrictions = models.PositiveSmallIntegerField(
-        verbose_name = "Book's age restrictions"
+        verbose_name = "Book's age restrictions",
+        null = True,
+        blank = True
     )
 
     publisher = models.ForeignKey(
         'books.Publishers',
         verbose_name = "Book's publisher",
         on_delete=models.DO_NOTHING,
-        related_name = 'bookslistpublisher'
+        related_name = 'bookslistpublisher',
+        null = True,
+        blank = True
     )
 
     amount = models.PositiveSmallIntegerField(
-        verbose_name = "Book's amount"
+        verbose_name = "Book's amount",
+        null = True,
+        blank = True
     )
 
     active = models.BooleanField(
@@ -230,7 +257,9 @@ class BooksList(models.Model):
 
     rating = models.CharField(max_length=15,
         verbose_name = "Book's rating",
-        choices = FORMAT_TYPES)
+        choices = FORMAT_TYPES,
+        null = True,
+        blank = True)
 
     date_of_create = models.DateField(
         verbose_name = "Date of create",

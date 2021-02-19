@@ -18,7 +18,7 @@
         <tr>
             <td>{{ genre.pk }}</td>
             <td><a href="{% url 'genre-detail' genre.pk %}">{{ genre.name }}</a></td>
-            <td>{{ genre.description }}</td>
+            <td>{{ genre.descpiption }}</td>
             <td><a href="{% url 'genre-update' genre.pk %}"><i class="far fa-edit"></i></a>
             <a href="{% url 'genre-delete' genre.pk %}"><i class="fas fa-trash"></i></a></td>
         </tr>

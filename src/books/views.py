@@ -6,7 +6,6 @@ from books.models import Autors, Genres, Publishers, BooksList, Series
 
 class BookList(ListView):
     model = BooksList
-    #return render(request, template_name='home.html', context=context)
 
 class BookDetail(DetailView):
     model = BooksList
