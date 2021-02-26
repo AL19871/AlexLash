@@ -3,7 +3,7 @@
 {% block title %} Genres {% endblock title %}
 
 {% block main_body %}
-    <h1>Genre name {{ object.name }}</h1>
+    <h1>Genre {{ object.name }}</h1>
     {% if permission == True %}
         <a href="{% url 'genres-list' %}"><button type="button" class="btn btn-light">All genres</button></a>
     {% endif %}

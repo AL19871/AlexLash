@@ -3,7 +3,7 @@
 {% block title %} Cities {% endblock title %}
 
 {% block main_body %}
-    <h1>Name {{ object.city }}</h1>
+    <h1>City {{ object.name }}</h1>
     {% if permission == True %}
         <a href="{% url 'cities-list' %}"><button type="button" class="btn btn-light">All cities</button></a>
     {% endif %}
