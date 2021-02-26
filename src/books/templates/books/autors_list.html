@@ -18,16 +18,27 @@
         {% for autor in object_list %}
             <tr>
                 <td>{{ autor.pk }}</td>
-                <td><a href="{% url 'autor-detail' autor.pk %}">{{ autor.last_name }} {{autor.first_name}}</a></td>
+                {% if permission_view == True %}
+                    <td><a href="{% url 'autor-detail' autor.pk %}">{{ autor.last_name }} {{autor.first_name}}</a></td>
+                {% else %}
+                    <td>{{ autor.last_name }} {{autor.first_name}}</td>
+                {% endif %}
                 <td>{{ autor.first_name }}</td>
                 <td>{{ autor.date_of_birth }}</td>
                 <td>{{ autor.address }}</td>
-                <td><a href="{% url 'autor-update' autor.pk %}"><i class="far fa-edit"></i></a>
-                <a href="{% url 'autor-delete' autor.pk %}"><i class="fas fa-trash"></i></a></td>
+                <td>
+                {% if permission_change == True %}
+                    <a href="{% url 'autor-update' autor.pk %}"><i class="far fa-edit"></i></a>
+                {% endif %}
+                {% if permission_delete == True %}
+                    <a href="{% url 'autor-delete' autor.pk %}"><i class="fas fa-trash"></i></a>
+                {% endif %}
+                </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-    <a href="{% url 'books-list' %}"><button type="button" class="btn btn-success">Home</button></a>
-    <a href="{% url 'autor-create' %}"><button type="button" class="btn btn-secondary">Add author</button></a>
+    {% if permission_add == True %}
+        <a href="{% url 'autor-create' %}"><button type="button" class="btn btn-secondary">Add author</button></a>
+    {% endif %}
 {% endblock main_body %}

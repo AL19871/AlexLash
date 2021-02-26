@@ -14,17 +14,28 @@
         </tr>
     </thead>
     <tbody>
-    {% for serie in object_list %}
+    {% for seria in object_list %}
         <tr>
-            <td>{{ serie.pk }}</td>
-            <td><a href="{% url 'seria-detail' serie.pk %}">{{ serie.name }}</a></td>
-            <td>{{ serie.description }}</td>
-            <td><a href="{% url 'seria-update' serie.pk %}"><i class="far fa-edit"></i></a>
-            <a href="{% url 'seria-delete' serie.pk %}"><i class="fas fa-trash"></i></a></td>
+            <td>{{ seria.pk }}</td>
+            {% if permission_view == True %}
+                <td><a href="{% url 'seria-detail' seria.pk %}">{{ seria.name }}</a></td>
+            {% else %}
+                <td>{{ seria.name }}</td>
+            {% endif %}
+            <td>{{ seria.description }}</td>
+            <td>
+            {% if permission_change == True %}
+                <a href="{% url 'seria-update' seria.pk %}"><i class="far fa-edit"></i></a>
+            {% endif %}
+            {% if permission_delete == True %}
+                <a href="{% url 'seria-delete' seria.pk %}"><i class="fas fa-trash"></i></a>
+            {% endif %}
+            </td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
-<a href="{% url 'books-list' %}"><button type="button" class="btn btn-success">Home</button></a>
-<a href="{% url 'seria-create' %}"><button type="button" class="btn btn-secondary">Add serie</button></a>
+{% if permission_add == True %}
+    <a href="{% url 'seria-create' %}"><button type="button" class="btn btn-secondary">Add seria</button></a>
+{% endif %}
 {% endblock main_body %}

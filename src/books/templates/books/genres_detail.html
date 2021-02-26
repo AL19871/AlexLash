@@ -4,5 +4,7 @@
 
 {% block main_body %}
     <h1>Genre name {{ object.name }}</h1>
-    <a href="{% url 'genres-list' %}"><button type="button" class="btn btn-light">All genres</button></a>
+    {% if permission == True %}
+        <a href="{% url 'genres-list' %}"><button type="button" class="btn btn-light">All genres</button></a>
+    {% endif %}
 {% endblock main_body %}

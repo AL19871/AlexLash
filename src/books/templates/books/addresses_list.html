@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %} Autors {% endblock title %}
+
+{% block main_body %}
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">city</th>
+              <th scope="col">street</th>
+              <th scope="col">block</th>
+              <th scope="col">house</th>
+              <th scope="col">actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for address in object_list %}
+            <tr>
+                <td>{{ address.pk }}</td>
+                {% if permission_view == True %}
+                    <td><a href="{% url 'address-detail' address.pk %}">{{ address.city.name }}</a></td>
+                {% else %}
+                <td>{{ address.city.name }}</td>
+                {% endif %}
+                <td>{{ address.street }}</td>
+                <td>{{ address.block }}</td>
+                <td>{{ address.house }}</td>
+                <td>
+                {% if permission_change == True %}
+                    <a href="{% url 'address-update' address.pk %}"><i class="far fa-edit"></i></a>
+                {% endif %}
+                {% if permission_delete == True %}
+                    <a href="{% url 'address-delete' address.pk %}"><i class="fas fa-trash"></i></a>
+                {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if permission_add == True %}
+        <a href="{% url 'address-create' %}"><button type="button" class="btn btn-secondary">Add address</button></a>
+    {% endif %}
+{% endblock main_body %}

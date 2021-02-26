@@ -6,6 +6,8 @@
     <h1>Delete publisher</h1>
     <form action="" method="POST">
         {% csrf_token %}
-        <button class="btn btn-danger btn-block">Are you sure?</button>
+        {% if permission == True %}
+            <button class="btn btn-danger btn-block">Are you sure?</button>
+        {% endif %}
     </form>
 {% endblock main_body %}

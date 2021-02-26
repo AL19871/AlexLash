@@ -17,14 +17,25 @@
     {% for genre in object_list %}
         <tr>
             <td>{{ genre.pk }}</td>
-            <td><a href="{% url 'genre-detail' genre.pk %}">{{ genre.name }}</a></td>
+            {% if permission_view == True %}
+                <td><a href="{% url 'genre-detail' genre.pk %}">{{ genre.name }}</a></td>
+            {% else %}
+                <td>{{ genre.name }}</td>
+            {% endif %}
             <td>{{ genre.descpiption }}</td>
-            <td><a href="{% url 'genre-update' genre.pk %}"><i class="far fa-edit"></i></a>
-            <a href="{% url 'genre-delete' genre.pk %}"><i class="fas fa-trash"></i></a></td>
+            <td>
+            {% if permission_change == True %}
+                <a href="{% url 'genre-update' genre.pk %}"><i class="far fa-edit"></i></a>
+            {% endif %}
+            {% if permission_delete == True %}
+                <a href="{% url 'genre-delete' genre.pk %}"><i class="fas fa-trash"></i></a>
+            {% endif %}
+            </td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
-<a href="{% url 'books-list' %}"><button type="button" class="btn btn-success">Home</button></a>
-<a href="{% url 'genre-create' %}"><button type="button" class="btn btn-secondary">Add genre</button></a>
+{% if permission_add == True %}
+    <a href="{% url 'genre-create' %}"><button type="button" class="btn btn-secondary">Add genre</button></a>
+{% endif %}
 {% endblock main_body %}

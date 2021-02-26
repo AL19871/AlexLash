@@ -9,7 +9,6 @@
         <tr>
           <th scope="col">#</th>
           <th scope="col">name</th>
-          <th scope="col">image</th>
           <th scope="col">cost</th>
           <th scope="col">author</th>
           <th scope="col">seria</th>
@@ -27,21 +26,32 @@
         <tr>
             <td>{{ book.pk }}</td>
             <td><a href="{% url 'book-detail' book.pk %}">{{ book.name }}</a></td>
-            <td>{{ book.image }}</td>
             <td>{{ book.cost }}</td>
-            <td>{{ book.author }}</td>
-            <td><a href="{% url 'seria-detail' book.seria.pk %}">{{ book.seria.name }}</a></td>
+            <td>{% for author in book.author.all %} {{ author }} {% endfor %}</td>
+            <td>{% for seria in book.seria.all %} {{ seria }} {% endfor %}</td>
             <td>{{ book.genre }}</td>
             <td>{{ book.year_of_publishing }}</td>
-            <td><a href="{% url 'publisher-detail' book.publisher.pk %}">{{ book.publisher.name }}</a></td>
+            {% if permission_pub_view == True %}
+                <td><a href="{% url 'publisher-detail' book.publisher.pk %}">{{ book.publisher }}</a></td>
+            {% else %}
+                <td>{{ book.publisher }}</td>
+            {% endif %}
             <td>{{ book.amount }}</td>
             <td>{{ book.active }}</td>
             <td>{{ book.rating }}</td>
-            <td><a href="{% url 'book-update' book.pk %}"><i class="far fa-edit"></i></a>
-            <a href="{% url 'book-delete' genre.pk %}"><i class="fas fa-trash"></i></a></td>
+            <td>
+            {% if permission_change == True %}
+                <a href="{% url 'book-update' book.pk %}"><i class="far fa-edit"></i></a>
+            {% endif %}
+            {% if permission_delete == True %}
+                <a href="{% url 'book-delete' book.pk %}"><i class="fas fa-trash"></i></a>
+            {% endif %}
+            </td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
-<a href="{% url 'book-create' %}"><button type="button" class="btn btn-secondary">Add book</button></a>
+{% if permission_add == True %}
+    <a href="{% url 'book-create' %}"><button type="button" class="btn btn-secondary">Add book</button></a>
+{% endif %}
 {% endblock main_body %}

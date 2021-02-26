@@ -5,5 +5,7 @@
 {% block main_body %}
     <h1>Publisher name {{ object.name }}</h1>
     Publisher address {{ object.address }}<br>
-    <a href="{% url 'publishers-list' %}"><button type="button" class="btn btn-light">All publishers</button></a>
+    {% if permission == True %}
+        <a href="{% url 'publishers-list' %}"><button type="button" class="btn btn-light">All publishers</button></a>
+    {% endif %}
 {% endblock main_body %}

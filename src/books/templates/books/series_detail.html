@@ -4,5 +4,7 @@
 
 {% block main_body %}
     <h1>Serie name {{ object.name }}</h1>
-    <a href="{% url 'series-list' %}"><button type="button" class="btn btn-light">All series</button></a>
+    {% if permission == True %}
+        <a href="{% url 'series-list' %}"><button type="button" class="btn btn-light">All series</button></a>
+    {% endif %}
 {% endblock main_body %}

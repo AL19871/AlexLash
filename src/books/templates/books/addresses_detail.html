@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %} Addresses {% endblock title %}
+
+{% block main_body %}
+    <h1>City {{ object.city.name }}</h1>
+    Street {{ object.street }}<br>
+    Block {{ object.block }}<br>
+    House {{ object.house }}<br>
+    {% if permission == True %}
+        <a href="{% url 'addresses-list' %}"><button type="button" class="btn btn-light">All addresses</button></a>
+    {% endif %}
+{% endblock main_body %}

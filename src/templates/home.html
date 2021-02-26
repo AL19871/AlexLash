@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %} {% endblock title %}
+
+{% block main_body %}
+    
+{% for object_book in objects_book_list %}
+
+    <div class="card" style="width: 15rem; height: 10rem;">
+        <img src="{{ object_book.image.url }}" class="card-img-top" alt="{{ object_book.name }}">
+        <div class="card-body">
+            <h5 class="card-title">{{ object_book.name }}</h5>
+            <p class="card-text">
+                Author: {% for author in object_book.author.all %}{{ author }}<br/>{% endfor %}
+                Seria {{ object_book.seria }}<br>
+                Genre: {% for genre in object_book.genre.all %}{{ genre }}<br/>{% endfor %}
+                Publisher {{ object_book.publisher }}<br>
+            </p>
+            <a href="{% url 'book-detail' object_book.pk %}" class="btn btn-primary">Go to detail</a>
+        </div>
+    </div>
+
+{% endfor %}
+
+
+
+{% endblock main_body %}

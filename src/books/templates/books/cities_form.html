@@ -2,15 +2,15 @@
 
 {% load crispy_forms_tags %}
 
-{% block title %} Autors {% endblock title %}
+{% block title %} Cities {% endblock title %}
 
 {% block main_body %}
-    <h1>Update autor</h1>
+    <h1>Add city</h1>
     <form action="" method="POST">
         {% csrf_token %}
         {{ form|crispy}}
         {% if permission == True %}
-            <button class="btn btn-dark btn-block">Update</button>
+            <button class="btn btn-primary btn-block">Add new</button>
         {% endif %}
     </form>
 {% endblock main_body %}

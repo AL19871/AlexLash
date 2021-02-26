@@ -9,6 +9,8 @@
     <form action="" method="POST">
         {% csrf_token %}
         {{ form|crispy}}
-        <button class="btn btn-dark btn-block">Update</button>
+        {% if permission == True %}
+            <button class="btn btn-dark btn-block">Update</button>
+        {% endif %}
     </form>
 {% endblock main_body %}

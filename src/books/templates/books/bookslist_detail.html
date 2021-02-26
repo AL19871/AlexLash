@@ -3,6 +3,17 @@
 {% block title %} Books {% endblock title %}
 
 {% block main_body %}
-    <h1>Book name {{ object.name }}</h1>
-    <a href="{% url 'books-list' %}"><button type="button" class="btn btn-light">All books</button></a>
+    <div class="card" style="width: 18rem;">
+        <img src="{{ object.image.url }}" class="card-img-top" alt="{{ object.name }}">
+        <div class="card-body">
+            <h5 class="card-title">{{ object.name }}</h5>
+            <p class="card-text">
+                Author: {% for author in object_book.author.all %}{{ author }}<br/>{% endfor %}
+                Seria {{ object.seria }}<br>
+                Genre: {% for genre in object_book.genre.all %}{{ genre }}<br/>{% endfor %}
+                Publisher {{ object.publisher }}<br>
+                <a href="{% url 'books-list' %}"><button type="button" class="btn btn-light">All books</button></a>
+            </p>
+        </div>
+    </div>
 {% endblock main_body %}

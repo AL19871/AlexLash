@@ -9,6 +9,8 @@
         <tr>
           <th scope="col">#</th>
           <th scope="col">name</th>
+          <th scope="col">address</th>
+          <th scope="col">description</th>
           <th scope="col">actions</th>
         </tr>
     </thead>
@@ -16,13 +18,26 @@
     {% for publisher in object_list %}
         <tr>
             <td>{{publisher.pk}}</td>
-            <td><a href="{% url 'publisher-detail' publisher.pk %}">{{ publisher.name }}</a></td>
-            <td><a href="{% url 'publisher-update' publisher.pk %}"><i class="far fa-edit"></i></a>
-            <a href="{% url 'publisher-delete' publisher.pk %}"><i class="fas fa-trash"></i></a></td>
+            {% if permission_view == True %}
+                <td><a href="{% url 'publisher-detail' publisher.pk %}">{{ publisher.name }}</a></td>
+            {% else %}
+                <td>{{ publisher.name }}</td>
+            {% endif %}
+            <td>{{ publisher.address }}</td>
+            <td>{{ publisher.description }}</td>
+            <td>
+            {% if permission_change == True %}
+                <a href="{% url 'publisher-update' publisher.pk %}"><i class="far fa-edit"></i></a>
+            {% endif %}
+            {% if permission_delete == True %}
+                <a href="{% url 'publisher-delete' publisher.pk %}"><i class="fas fa-trash"></i></a>
+            {% endif %}
+            </td>
         </tr>
     {% endfor %}
     </tbody>
 </table>
-<a href="{% url 'books-list' %}"><button type="button" class="btn btn-success">Home</button></a>
-<a href="{% url 'publisher-create' %}"><button type="button" class="btn btn-secondary">Add publisher</button></a>
+{% if permission_add == True %}
+    <a href="{% url 'publisher-create' %}"><button type="button" class="btn btn-secondary">Add publisher</button></a>
+{% endif %}
 {% endblock main_body %}

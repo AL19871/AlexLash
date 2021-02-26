@@ -1,0 +1,14 @@
+{% extends "base_login_logout.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %} LOGOUT {% endblock title %}
+
+{% block main_body %}
+    <h1>Thank you. Bye</h1>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form|crispy}}
+        <a href="{% url 'my-login' %}"><button type="button" class="btn btn-outline-primary">LOG IN</button></a>
+    </form>
+{% endblock main_body %}

@@ -150,6 +150,7 @@ class BooksList(models.Model):
 
     image = models.ImageField(
         verbose_name = "Book's image",
+        upload_to = 'uploads/',
         null = True,
         blank = True
     )

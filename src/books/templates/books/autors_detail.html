@@ -6,5 +6,7 @@
     <h1>Autor name {{ object.last_name }} {{ object.first_name }}</h1>
     Autor date of birthday {{ object.date_of_birth }}<br>
     Autor address {{ object.address }}<br>
-    <a href="{% url 'autors-list' %}"><button type="button" class="btn btn-light">All autors</button></a>
+    {% if permission == True %}
+        <a href="{% url 'autors-list' %}"><button type="button" class="btn btn-light">All autors</button></a>
+    {% endif %}
 {% endblock main_body %}
