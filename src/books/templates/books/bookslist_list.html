@@ -28,8 +28,12 @@
             <td><a href="{% url 'book-detail' book.pk %}">{{ book.name }}</a></td>
             <td>{{ book.cost }}</td>
             <td>{% for author in book.author.all %} {{ author }} {% endfor %}</td>
-            <td>{% for seria in book.seria.all %} {{ seria }} {% endfor %}</td>
-            <td>{{ book.genre }}</td>
+            {% if permission_seria_view == True %}
+                <td><a href="{% url 'seria-detail' book.seria.pk %}">{{ book.seria }}</a></td>
+            {% else %}
+                <td>{{ book.seria }}</td>
+            {% endif %}
+            <td>{% for genre in book.genre.all %} {{ genre }} {% endfor %}</td>
             <td>{{ book.year_of_publishing }}</td>
             {% if permission_pub_view == True %}
                 <td><a href="{% url 'publisher-detail' book.publisher.pk %}">{{ book.publisher }}</a></td>
