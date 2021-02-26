@@ -8,9 +8,9 @@
         <div class="card-body">
             <h5 class="card-title">{{ object.name }}</h5>
             <p class="card-text">
-                Author: {% for author in object_book.author.all %}{{ author }}<br/>{% endfor %}
+                Author: {% for author in object.author.all %}{{ author }}<br/>{% endfor %}
                 Seria {{ object.seria }}<br>
-                Genre: {% for genre in object_book.genre.all %}{{ genre }}<br/>{% endfor %}
+                Genre: {% for genre in object.genre.all %}{{ genre }}<br/>{% endfor %}
                 Publisher {{ object.publisher }}<br>
                 <a href="{% url 'books-list' %}"><button type="button" class="btn btn-light">All books</button></a>
             </p>
