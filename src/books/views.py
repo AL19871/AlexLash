@@ -24,6 +24,7 @@ def home_page(request):
 class BookList(ListView):
     login_url = reverse_lazy('my-login')
     model = BooksList
+    paginate_by = 10
     #permission_required = 'books.view_bookslist'
 
     def get_context_data(self, **kwargs):
@@ -111,6 +112,7 @@ class AutorDelete(PermissionRequiredMixin, DeleteView):
 class AutorList(PermissionRequiredMixin, ListView):
     login_url = reverse_lazy('my-login')
     model = Autors
+    paginate_by = 10
     permission_required = 'books.view_autors'
 
     def get_context_data(self, **kwargs):
@@ -175,6 +177,7 @@ class GenreDelete(PermissionRequiredMixin, DeleteView):
 class GenreList(PermissionRequiredMixin, ListView):
     login_url = reverse_lazy('my-login')
     model = Genres
+    paginate_by = 10
     permission_required = 'books.view_genres'
 
     def get_context_data(self, **kwargs):
@@ -239,6 +242,7 @@ class SeriaDelete(PermissionRequiredMixin, DeleteView):
 class SeriaList(PermissionRequiredMixin, ListView):
     login_url = reverse_lazy('my-login')
     model = Series
+    paginate_by = 10
     permission_required = 'books.view_series'
 
     def get_context_data(self, **kwargs):
@@ -303,6 +307,7 @@ class PublisherDelete(PermissionRequiredMixin, DeleteView):
 class PublisherList(PermissionRequiredMixin, ListView):
     login_url = reverse_lazy('my-login')
     model = Publishers
+    paginate_by = 10
     permission_required = 'books.view_publishers'
 
     def get_context_data(self, **kwargs):
@@ -367,6 +372,7 @@ class AddressDelete(PermissionRequiredMixin, DeleteView):
 class AddressList(PermissionRequiredMixin, ListView):
     login_url = reverse_lazy('my-login')
     model = Addresses
+    paginate_by = 10
     permission_required = 'books.view_addresses'
 
     def get_context_data(self, **kwargs):
@@ -432,6 +438,7 @@ class CityDelete(PermissionRequiredMixin, DeleteView):
 class CityList(PermissionRequiredMixin, ListView):
     login_url = reverse_lazy('my-login')
     model = Cities
+    paginate_by = 10
     permission_required = 'books.view_cities'
 
     def get_context_data(self, **kwargs):
