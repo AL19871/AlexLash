@@ -13,7 +13,7 @@ def edit_context(request_query, context):
     context['permission_book_view'] = request_query.user.has_perm('books.view_bookslist')
     context['permission_genre_view'] = request_query.user.has_perm('books.view_genres')
     context['permission_author_view'] = request_query.user.has_perm('books.view_autors')
-    context['q'] = request_query.GET.get('q') if request_query.GET.get('q') else 'Search'
+    context['q'] = request_query.GET.get('q') if request_query.GET.get('q') and request_query.GET.get('q') != None else 'Search'
     field_to_sort = request_query.GET.get('field')
     direction_to_sort = request_query.GET.get('direction')
     context['field_to_sort'] = field_to_sort
