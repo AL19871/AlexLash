@@ -9,12 +9,12 @@
 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="{{ object_book_current.image.url }}" width="5%" height="225" class="d-block w-100" alt="{{ object_book_current.name }}">
+            <img src="{{ object_book_current.image.url }}" width="10" height="225" class="d-block w-100" alt="{{ object_book_current.name }}">
         </div>
         {% for object_book in objects_book_list %}
             {% if object_book.image %}
                 <div class="carousel-item">
-                    <img src="{{ object_book.image.url }}" width="5%" height="225" class="d-block w-100" alt="{{ object_book.name }}">
+                    <img src="{{ object_book.image.url }}" width="10" height="225" class="d-block w-100" alt="{{ object_book.name }}">
                 </div>
             {% else %}
             {% endif %}
