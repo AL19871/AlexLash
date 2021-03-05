@@ -29,7 +29,6 @@ def home_page(request):
     context['object_book_current'] = BooksList.objects.first()
     context['objects_book_list'] = BooksList.objects.all()
     context['objects_author_list'] = Autors.objects.all()
-    context['search_field'] = 'home-page'
 
     context = edit_context(request, context)
 
