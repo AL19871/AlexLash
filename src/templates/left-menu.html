@@ -37,7 +37,7 @@
     <form class="form-inline my-2 my-lg-0"></form>
       {% if search_field %}
         <form action="{% url search_field %}" method="get">
-          <input name='q' class="form-control mr-sm-2" type="text" placeholder="{{ q }}" aria-label="Search">
+          <input name='q' class="form-control mr-sm-2" type="text" placeholder="{% q if q else 'Search' %}" aria-label="Search">
         </form>
       {% endif %}
       <a href="{% url 'my-login' %}"><button type="button" class="btn btn-outline-danger">LOG IN</button></a>
