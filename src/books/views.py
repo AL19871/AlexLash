@@ -3,21 +3,35 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import DetailView, DeleteView, ListView, UpdateView, CreateView
 from books.models import Autors, Genres, Publishers, BooksList, Series, Addresses, Cities
+from django.db.models import Q
 
-def edit_context(user_query, context):
-    context['permission_address_view'] = user_query.has_perm('books.view_addresses')
-    context['permission_city_view'] = user_query.has_perm('books.view_cities')
-    context['permission_seria_view'] = user_query.has_perm('books.view_series')
-    context['permission_publisher_view'] = user_query.has_perm('books.view_publishers')
-    context['permission_book_view'] = user_query.has_perm('books.view_bookslist')
-    context['permission_genre_view'] = user_query.has_perm('books.view_genres')
-    context['permission_author_view'] = user_query.has_perm('books.view_autors')
+def edit_context(request_query, context):
+    context['permission_address_view'] = request_query.user.has_perm('books.view_addresses')
+    context['permission_city_view'] = request_query.user.has_perm('books.view_cities')
+    context['permission_seria_view'] = request_query.user.has_perm('books.view_series')
+    context['permission_publisher_view'] = request_query.user.has_perm('books.view_publishers')
+    context['permission_book_view'] = request_query.user.has_perm('books.view_bookslist')
+    context['permission_genre_view'] = request_query.user.has_perm('books.view_genres')
+    context['permission_author_view'] = request_query.user.has_perm('books.view_autors')
+    context['q'] = request_query.GET.get('q')
+    field_to_sort = request_query.GET.get('field')
+    direction_to_sort = request_query.GET.get('direction')
+    context['field_to_sort'] = field_to_sort
+    context['sort_form'] = f'field={field_to_sort}&direction={direction_to_sort}'
+    direction_to_sort = 'up' if direction_to_sort == 'down' else 'down'
+    context['direction_to_sort'] = direction_to_sort
+    context['sort_form_new'] = f'direction={direction_to_sort}'
+
     return context
 
 def home_page(request):
     context = {}
-    context = edit_context(request.user, context)
+    context['object_book_current'] = BooksList.objects.first()
     context['objects_book_list'] = BooksList.objects.all()
+    context['objects_author_list'] = Autors.objects.all()
+    context['search_field'] = 'home-page'
+
+    context = edit_context(request, context)
 
     return render(request, template_name = 'home.html', context=context)
 
@@ -33,8 +47,24 @@ class BookList(ListView):
         context['permission_view'] = self.request.user.has_perm('books.view_bookslist')
         context['permission_change'] = self.request.user.has_perm('books.change_bookslist')
         context['permission_delete'] = self.request.user.has_perm('books.delete_bookslist')
-        context = edit_context(self.request.user, context)
+        context['search_field'] = 'books-list'
+        
+        context = edit_context(self.request, context)
+
         return context
+
+    def get_ordering(self):
+        field_to_sort = self.request.GET.get('field') if self.request.GET.get('field') else 'pk'
+        direction_to_sort = '-' if self.request.GET.get('direction') == 'down' else ''
+        return f'{direction_to_sort}{field_to_sort}' if field_to_sort else super().get_ordering()
+
+    def get_queryset(self):
+        field_to_query = self.request.GET.get('q')
+        qs = super().get_queryset()
+        if field_to_query:
+            qs = qs.filter(Q(name__icontains=field_to_query) | Q(cost__icontains=field_to_query) | Q(amount__icontains=field_to_query) | Q(rating__icontains=field_to_query))
+        qs = qs.order_by(self.get_ordering())
+        return qs
 
 class BookDetail(DetailView):
     login_url = reverse_lazy('my-login')
@@ -43,7 +73,7 @@ class BookDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.view_bookslist')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class BookDelete(PermissionRequiredMixin, DeleteView):
@@ -55,7 +85,7 @@ class BookDelete(PermissionRequiredMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.delete_bookslist')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class BookCreate(PermissionRequiredMixin, CreateView):
@@ -69,7 +99,7 @@ class BookCreate(PermissionRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.add_bookslist')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class BookUpdate(PermissionRequiredMixin, UpdateView):
@@ -83,7 +113,7 @@ class BookUpdate(PermissionRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.change_bookslist')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class AutorDetail(PermissionRequiredMixin, DetailView):
@@ -94,7 +124,7 @@ class AutorDetail(PermissionRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.view_autors')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class AutorDelete(PermissionRequiredMixin, DeleteView):
@@ -106,7 +136,7 @@ class AutorDelete(PermissionRequiredMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.delete_autors')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class AutorList(PermissionRequiredMixin, ListView):
@@ -121,8 +151,23 @@ class AutorList(PermissionRequiredMixin, ListView):
         context['permission_view'] = self.request.user.has_perm('books.view_autors')
         context['permission_change'] = self.request.user.has_perm('books.change_autors')
         context['permission_delete'] = self.request.user.has_perm('books.delete_autors')
-        context = edit_context(self.request.user, context)
+        context['search_field'] = 'autors-list'
+        context = edit_context(self.request, context)
+        
         return context
+
+    def get_ordering(self):
+        field_to_sort = self.request.GET.get('field') if self.request.GET.get('field') else 'pk'
+        direction_to_sort = '-' if self.request.GET.get('direction') == 'down' else ''
+        return f'{direction_to_sort}{field_to_sort}' if field_to_sort else super().get_ordering()
+
+    def get_queryset(self):
+        field_to_query = self.request.GET.get('q')
+        qs = super().get_queryset()
+        if field_to_query:
+            qs = qs.filter(Q(first_name__icontains=field_to_query) | Q(last_name__icontains=field_to_query) | Q(date_of_birth__icontains=field_to_query))
+        qs = qs.order_by(self.get_ordering())
+        return qs
 
 class AutorCreate(PermissionRequiredMixin, CreateView):
     login_url = reverse_lazy('my-login')
@@ -134,7 +179,7 @@ class AutorCreate(PermissionRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.add_autors')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class AutorUpdate(PermissionRequiredMixin, UpdateView):
@@ -148,7 +193,7 @@ class AutorUpdate(PermissionRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.change_autors')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class GenreDetail(PermissionRequiredMixin, DetailView):
@@ -159,7 +204,7 @@ class GenreDetail(PermissionRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.view_genres')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class GenreDelete(PermissionRequiredMixin, DeleteView):
@@ -171,7 +216,7 @@ class GenreDelete(PermissionRequiredMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.delete_genres')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class GenreList(PermissionRequiredMixin, ListView):
@@ -186,8 +231,23 @@ class GenreList(PermissionRequiredMixin, ListView):
         context['permission_delete'] = self.request.user.has_perm('books.delete_genres')
         context['permission_view'] = self.request.user.has_perm('books.view_genres')
         context['permission_change'] = self.request.user.has_perm('books.change_genres')
-        context = edit_context(self.request.user, context)
+        context['search_field'] = 'genres-list'
+        context = edit_context(self.request, context)
+        
         return context
+
+    def get_ordering(self):
+        field_to_sort = self.request.GET.get('field') if self.request.GET.get('field') else 'pk'
+        direction_to_sort = '-' if self.request.GET.get('direction') == 'down' else ''
+        return f'{direction_to_sort}{field_to_sort}' if field_to_sort else super().get_ordering()
+
+    def get_queryset(self):
+        field_to_query = self.request.GET.get('q')
+        qs = super().get_queryset()
+        if field_to_query:
+            qs = qs.filter(Q(name__icontains=field_to_query) | Q(description__icontains=field_to_query))
+        qs = qs.order_by(self.get_ordering())
+        return qs
 
 class GenreCreate(PermissionRequiredMixin, CreateView):
     login_url = reverse_lazy('my-login')
@@ -199,7 +259,7 @@ class GenreCreate(PermissionRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.add_genres')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class GenreUpdate(PermissionRequiredMixin, UpdateView):
@@ -213,7 +273,7 @@ class GenreUpdate(PermissionRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.change_genres')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class SeriaDetail(PermissionRequiredMixin, DetailView):
@@ -224,7 +284,7 @@ class SeriaDetail(PermissionRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.view_series')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class SeriaDelete(PermissionRequiredMixin, DeleteView):
@@ -236,7 +296,7 @@ class SeriaDelete(PermissionRequiredMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.delete_series')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class SeriaList(PermissionRequiredMixin, ListView):
@@ -251,8 +311,23 @@ class SeriaList(PermissionRequiredMixin, ListView):
         context['permission_change'] = self.request.user.has_perm('books.change_series')
         context['permission_delete'] = self.request.user.has_perm('books.delete_series')
         context['permission_view'] = self.request.user.has_perm('books.view_series')
-        context = edit_context(self.request.user, context)
+        context['search_field'] = 'series-list'
+        context = edit_context(self.request, context)
+
         return context
+
+    def get_ordering(self):
+        field_to_sort = self.request.GET.get('field') if self.request.GET.get('field') else 'pk'
+        direction_to_sort = '-' if self.request.GET.get('direction') == 'down' else ''
+        return f'{direction_to_sort}{field_to_sort}' if field_to_sort else super().get_ordering()
+
+    def get_queryset(self):
+        field_to_query = self.request.GET.get('q')
+        qs = super().get_queryset()
+        if field_to_query:
+            qs = qs.filter(Q(name__icontains=field_to_query) | Q(description__icontains=field_to_query))
+        qs = qs.order_by(self.get_ordering())
+        return qs
 
 class SeriaCreate(PermissionRequiredMixin, CreateView):
     login_url = reverse_lazy('my-login')
@@ -264,7 +339,7 @@ class SeriaCreate(PermissionRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.add_series')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class SeriaUpdate(PermissionRequiredMixin, UpdateView):
@@ -278,7 +353,7 @@ class SeriaUpdate(PermissionRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.change_series')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class PublisherDetail(PermissionRequiredMixin, DetailView):
@@ -289,7 +364,7 @@ class PublisherDetail(PermissionRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.view_publishers')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class PublisherDelete(PermissionRequiredMixin, DeleteView):
@@ -301,7 +376,7 @@ class PublisherDelete(PermissionRequiredMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.delete_publishers')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class PublisherList(PermissionRequiredMixin, ListView):
@@ -316,8 +391,23 @@ class PublisherList(PermissionRequiredMixin, ListView):
         context['permission_change'] = self.request.user.has_perm('books.change_publishers')
         context['permission_add'] = self.request.user.has_perm('books.add_publishers')
         context['permission_delete'] = self.request.user.has_perm('books.delete_publishers')
-        context = edit_context(self.request.user, context)
+        context['search_field'] = 'publishers-list'
+        context = edit_context(self.request, context)
+
         return context
+
+    def get_ordering(self):
+        field_to_sort = self.request.GET.get('field') if self.request.GET.get('field') else 'pk'
+        direction_to_sort = '-' if self.request.GET.get('direction') == 'down' else ''
+        return f'{direction_to_sort}{field_to_sort}' if field_to_sort else super().get_ordering()
+
+    def get_queryset(self):
+        field_to_query = self.request.GET.get('q')
+        qs = super().get_queryset()
+        if field_to_query:
+            qs = qs.filter(Q(name__icontains=field_to_query) | Q(address__city__name__icontains=field_to_query))
+        qs = qs.order_by(self.get_ordering())
+        return qs
 
 class PublisherCreate(PermissionRequiredMixin, CreateView):
     login_url = reverse_lazy('my-login')
@@ -329,7 +419,7 @@ class PublisherCreate(PermissionRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.add_publishers')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class PublisherUpdate(PermissionRequiredMixin, UpdateView):
@@ -343,7 +433,7 @@ class PublisherUpdate(PermissionRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.change_publishers')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class AddressDetail(PermissionRequiredMixin, DetailView):
@@ -354,7 +444,7 @@ class AddressDetail(PermissionRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.view_addresses')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class AddressDelete(PermissionRequiredMixin, DeleteView):
@@ -366,7 +456,7 @@ class AddressDelete(PermissionRequiredMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.delete_addresses')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class AddressList(PermissionRequiredMixin, ListView):
@@ -381,8 +471,23 @@ class AddressList(PermissionRequiredMixin, ListView):
         context['permission_view'] = self.request.user.has_perm('books.view_addresses')
         context['permission_change'] = self.request.user.has_perm('books.change_addresses')
         context['permission_delete'] = self.request.user.has_perm('books.delete_addresses')
-        context = edit_context(self.request.user, context)
+        context['search_field'] = 'addresses-list'
+        context = edit_context(self.request, context)
+
         return context
+
+    def get_ordering(self):
+        field_to_sort = self.request.GET.get('field') if self.request.GET.get('field') else 'pk'
+        direction_to_sort = '-' if self.request.GET.get('direction') == 'down' else ''
+        return f'{direction_to_sort}{field_to_sort}' if field_to_sort else super().get_ordering()
+
+    def get_queryset(self):
+        field_to_query = self.request.GET.get('q')
+        qs = super().get_queryset()
+        if field_to_query:
+            qs = qs.filter(Q(city__name__icontains=field_to_query) | Q(street__icontains=field_to_query))
+        qs = qs.order_by(self.get_ordering())
+        return qs
 
 class AddressCreate(PermissionRequiredMixin, CreateView):
     login_url = reverse_lazy('my-login')
@@ -394,7 +499,7 @@ class AddressCreate(PermissionRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.add_addresses')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class AddressUpdate(PermissionRequiredMixin, UpdateView):
@@ -408,7 +513,7 @@ class AddressUpdate(PermissionRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.change_addresses')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class CityDetail(PermissionRequiredMixin, DetailView):
@@ -419,7 +524,7 @@ class CityDetail(PermissionRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.view_cities')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class CityDelete(PermissionRequiredMixin, DeleteView):
@@ -432,7 +537,7 @@ class CityDelete(PermissionRequiredMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.delete_cities')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class CityList(PermissionRequiredMixin, ListView):
@@ -447,8 +552,23 @@ class CityList(PermissionRequiredMixin, ListView):
         context['permission_view'] = self.request.user.has_perm('books.view_cities')
         context['permission_delete'] = self.request.user.has_perm('books.delete_cities')
         context['permission_change'] = self.request.user.has_perm('books.change_cities')
-        context = edit_context(self.request.user, context)
+        context['search_field'] = 'cities-list'
+        context = edit_context(self.request, context)
+
         return context
+
+    def get_ordering(self):
+        field_to_sort = self.request.GET.get('field') if self.request.GET.get('field') else 'pk'
+        direction_to_sort = '-' if self.request.GET.get('direction') == 'down' else ''
+        return f'{direction_to_sort}{field_to_sort}' if field_to_sort else super().get_ordering()
+
+    def get_queryset(self):
+        field_to_query = self.request.GET.get('q')
+        qs = super().get_queryset()
+        if field_to_query:
+            qs = qs.filter(name__icontains=field_to_query)
+        qs = qs.order_by(self.get_ordering())
+        return qs
 
 class CityCreate(PermissionRequiredMixin, CreateView):
     login_url = reverse_lazy('my-login')
@@ -460,7 +580,7 @@ class CityCreate(PermissionRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.add_cities')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context
 
 class CityUpdate(PermissionRequiredMixin, UpdateView):
@@ -475,5 +595,5 @@ class CityUpdate(PermissionRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['permission'] = self.request.user.has_perm('books.change_cities')
-        context = edit_context(self.request.user, context)
+        context = edit_context(self.request, context)
         return context

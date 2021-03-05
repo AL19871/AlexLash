@@ -7,10 +7,17 @@
 <table class="table table-striped table-bordered">
     <thead class="thead-dark">
         <tr>
-          <th scope="col">#</th>
-          <th scope="col">name</th>
-          <th scope="col">description</th>
-          <th scope="col">actions</th>
+            <th scope="col">#</th>
+            <th scope="col"><a href="?field=name&{{ sort_form_new }}">Name
+                {% if field_to_sort == 'name' and direction_to_sort == 'down' %}
+                    <i class="fad fa-arrow-to-top"></i>
+                {% elif field_to_sort == 'name' and direction_to_sort == 'up' %}
+                    <i class="far fa-arrow-to-bottom"></i>
+                {% else %}
+                {% endif %}
+            </a></th>
+            <th scope="col">Description</th>
+            <th scope="col">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -35,6 +42,23 @@
     {% endfor %}
     </tbody>
 </table>
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1&{{ sort_form }}">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}&{{ sort_form }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}&{{ sort_form }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}&{{ sort_form }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
 {% if permission_add == True %}
     <a href="{% url 'seria-create' %}"><button type="button" class="btn btn-secondary">Add seria</button></a>
 {% endif %}

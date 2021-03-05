@@ -6,12 +6,33 @@
     <table class="table table-striped table-bordered">
         <thead class="thead-dark">
             <tr>
-              <th scope="col">#</th>
-              <th scope="col">last_name</th>
-              <th scope="col">first_name</th>
-              <th scope="col">date_of_birth</th>
-              <th scope="col">address</th>
-              <th scope="col">actions</th>
+                <th scope="col">#</th>
+                <th scope="col"><a href="?field=last_name&{{ sort_form_new }}">Last name
+                    {% if field_to_sort == 'last_name' and direction_to_sort == 'down' %}
+                        <i class="fad fa-arrow-to-top"></i>
+                    {% elif field_to_sort == 'last_name' and direction_to_sort == 'up' %}
+                        <i class="far fa-arrow-to-bottom"></i>
+                    {% else %}
+                    {% endif %}
+                </a></th>
+                <th scope="col"><a href="?field=first_name&{{ sort_form_new }}">First name
+                    {% if field_to_sort == 'first_name' and direction_to_sort == 'down' %}
+                        <i class="fad fa-arrow-to-top"></i>
+                    {% elif field_to_sort == 'first_name' and direction_to_sort == 'up' %}
+                        <i class="far fa-arrow-to-bottom"></i>
+                    {% else %}
+                    {% endif %}
+                </a></th>
+                <th scope="col"><a href="?field=date_of_birth&{{ sort_form_new }}">Date of birth 
+                    {% if field_to_sort == 'date_of_birth' and direction_to_sort == 'down' %}
+                        <i class="fad fa-arrow-to-top"></i>
+                    {% elif field_to_sort == 'date_of_birth' and direction_to_sort == 'up' %}
+                        <i class="far fa-arrow-to-bottom"></i>
+                    {% else %}
+                    {% endif %}
+                </a></th>
+                <th scope="col">Address</th>
+                <th scope="col">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -38,6 +59,24 @@
         {% endfor %}
         </tbody>
     </table>
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1&{{ sort_form }}">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}&{{ sort_form }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+    
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&{{ sort_form }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}&{{ sort_form }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    <br>
     {% if permission_add == True %}
         <a href="{% url 'autor-create' %}"><button type="button" class="btn btn-secondary">Add author</button></a>
     {% endif %}
