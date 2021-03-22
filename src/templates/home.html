@@ -44,8 +44,8 @@
             <div class="card-body">
                 <h5 class="card-title">{{ object_book.name }}</h5>
                 <p class="card-text">
-                    Author {{ object_book.author }}<br>
-                    Genre {{ object_book.genre }}<br>
+                    Author {% for author in object_book.author.all %}{{ author }}<br/>{% endfor %}
+                    Genre {% for genre in object_book.genre.all %}{{ genre }}<br/>{% endfor %}
                     Publisher {{ object_book.publisher }}<br>
                 </p>
                 <a href="{% url 'cart:add-to-cart' %}?book={{ object_book.pk }}" class="btn btn-primary">Add to cart</a>
