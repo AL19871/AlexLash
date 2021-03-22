@@ -11,4 +11,8 @@
         {{ form|crispy}}
         <button class="btn btn-primary btn-block">LOG IN</button>
     </form>
+    <br>
+    <form action="" method="GET">
+        <a href="{% url 'customer:registration' %}"><button type="button" class="btn btn-secondary btn-block">REGISTRATION</button></a>
+    </form>
 {% endblock main_body %}

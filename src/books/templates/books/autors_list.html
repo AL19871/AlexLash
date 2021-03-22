@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load book_tags %}
 
 {% block title %} Autors {% endblock title %}
 
@@ -8,28 +9,13 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col"><a href="?field=last_name&{{ sort_form_new }}">Last name
-                    {% if field_to_sort == 'last_name' and direction_to_sort == 'down' %}
-                        <i class="fad fa-arrow-to-top"></i>
-                    {% elif field_to_sort == 'last_name' and direction_to_sort == 'up' %}
-                        <i class="far fa-arrow-to-bottom"></i>
-                    {% else %}
-                    {% endif %}
+                    {% find_arrow 'last_name' %}
                 </a></th>
                 <th scope="col"><a href="?field=first_name&{{ sort_form_new }}">First name
-                    {% if field_to_sort == 'first_name' and direction_to_sort == 'down' %}
-                        <i class="fad fa-arrow-to-top"></i>
-                    {% elif field_to_sort == 'first_name' and direction_to_sort == 'up' %}
-                        <i class="far fa-arrow-to-bottom"></i>
-                    {% else %}
-                    {% endif %}
+                    {% find_arrow 'first_name' %}
                 </a></th>
                 <th scope="col"><a href="?field=date_of_birth&{{ sort_form_new }}">Date of birth 
-                    {% if field_to_sort == 'date_of_birth' and direction_to_sort == 'down' %}
-                        <i class="fad fa-arrow-to-top"></i>
-                    {% elif field_to_sort == 'date_of_birth' and direction_to_sort == 'up' %}
-                        <i class="far fa-arrow-to-bottom"></i>
-                    {% else %}
-                    {% endif %}
+                    {% find_arrow 'date_of_birth' %}
                 </a></th>
                 <th scope="col">Address</th>
                 <th scope="col">Actions</th>

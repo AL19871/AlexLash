@@ -19,10 +19,13 @@ from django.conf.urls.static import static
 from django.conf import settings
 from books import views
 from accs import urls as accs_urls
+from cart import urls as cart_urls
+from order import urls as order_urls
+from customer import urls as customer_urls
 
 urlpatterns = [
 
-    path('', views.home_page, name = 'home-page'),
+    path('', views.HomePage.as_view(), name = 'home-page'),
 
     path('s-admin/', admin.site.urls),
 
@@ -70,6 +73,9 @@ urlpatterns = [
 ]
 
 urlpatterns.append(path('accs/', include(accs_urls)))
+urlpatterns.append(path('cart/', include(cart_urls, namespace='cart')))
+urlpatterns.append(path('order/', include(order_urls, namespace='order')))
+urlpatterns.append(path('customer/', include(customer_urls, namespace='customer')))
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

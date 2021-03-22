@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load book_tags %}
 
 {% block title %} Books {% endblock title %}
 
@@ -9,84 +10,34 @@
             <tr>
             <th scope="col">#</th>
             <th scope="col"><a href="?field=name&{{ sort_form_new }}">Name
-                {% if field_to_sort == 'name' and direction_to_sort == 'down' %}
-                    <i class="fad fa-arrow-to-top"></i>
-                {% elif field_to_sort == 'name' and direction_to_sort == 'up' %}
-                    <i class="far fa-arrow-to-bottom"></i>
-                {% else %}
-                {% endif %}
+                {% find_arrow 'name' %}
             </a></th>
             <th scope="col"><a href="?field=cost&{{ sort_form_new }}">Cost
-                {% if field_to_sort == 'cost' and direction_to_sort == 'down' %}
-                    <i class="fad fa-arrow-to-top"></i>
-                {% elif field_to_sort == 'cost' and direction_to_sort == 'up' %}
-                    <i class="far fa-arrow-to-bottom"></i>
-                {% else %}
-                {% endif %}
+                {% find_arrow 'cost' %}
             </a></th>
             <th scope="col"><a href="?field=author&{{ sort_form_new }}">Author
-                {% if field_to_sort == 'author' and direction_to_sort == 'down' %}
-                    <i class="fad fa-arrow-to-top"></i>
-                {% elif field_to_sort == 'author' and direction_to_sort == 'up' %}
-                    <i class="far fa-arrow-to-bottom"></i>
-                {% else %}
-                {% endif %}
+                {% find_arrow 'author' %}
             </a></th>
             <th scope="col"><a href="?field=seria&{{ sort_form_new }}">Seria
-                {% if field_to_sort == 'seria' and direction_to_sort == 'down' %}
-                    <i class="fad fa-arrow-to-top"></i>
-                {% elif field_to_sort == 'seria' and direction_to_sort == 'up' %}
-                    <i class="far fa-arrow-to-bottom"></i>
-                {% else %}
-                {% endif %}
+                {% find_arrow 'seria' %}
             </a></th>
             <th scope="col"><a href="?field=genre&{{ sort_form_new }}">Genre
-                {% if field_to_sort == 'genre' and direction_to_sort == 'down' %}
-                    <i class="fad fa-arrow-to-top"></i>
-                {% elif field_to_sort == 'genre' and direction_to_sort == 'up' %}
-                    <i class="far fa-arrow-to-bottom"></i>
-                {% else %}
-                {% endif %}
+                {% find_arrow 'genre' %}
             </a></th>
             <th scope="col"><a href="?field=year_of_publishing&{{ sort_form_new }}">Year of publishing
-                {% if field_to_sort == 'year_of_publishing' and direction_to_sort == 'down' %}
-                    <i class="fad fa-arrow-to-top"></i>
-                {% elif field_to_sort == 'year_of_publishing' and direction_to_sort == 'up' %}
-                    <i class="far fa-arrow-to-bottom"></i>
-                {% else %}
-                {% endif %}
+                {% find_arrow 'year_of_publishing' %}
             </a></th>
             <th scope="col"><a href="?field=publisher&{{ sort_form_new }}">Publisher
-                {% if field_to_sort == 'publisher' and direction_to_sort == 'down' %}
-                    <i class="fad fa-arrow-to-top"></i>
-                {% elif field_to_sort == 'publisher' and direction_to_sort == 'up' %}
-                    <i class="far fa-arrow-to-bottom"></i>
-                {% else %}
-                {% endif %}
+                {% find_arrow 'publisher' %}
             </a></th>
             <th scope="col"><a href="?field=amount&{{ sort_form_new }}">Amount
-                {% if field_to_sort == 'amount' and direction_to_sort == 'down' %}
-                    <i class="fad fa-arrow-to-top"></i>
-                {% elif field_to_sort == 'amount' and direction_to_sort == 'up' %}
-                    <i class="far fa-arrow-to-bottom"></i>
-                {% else %}
-                {% endif %}
+                {% find_arrow 'amount' %}
             </a></th>
             <th scope="col"><a href="?field=active&{{ sort_form_new }}">Active
-                {% if field_to_sort == 'active' and direction_to_sort == 'down' %}
-                    <i class="fad fa-arrow-to-top"></i>
-                {% elif field_to_sort == 'active' and direction_to_sort == 'up' %}
-                    <i class="far fa-arrow-to-bottom"></i>
-                {% else %}
-                {% endif %}
+                {% find_arrow 'active' %}
             </a></th>
             <th scope="col"><a href="?field=rating&{{ sort_form_new }}">Rating
-                {% if field_to_sort == 'rating' and direction_to_sort == 'down' %}
-                    <i class="fad fa-arrow-to-top"></i>
-                {% elif field_to_sort == 'rating' and direction_to_sort == 'up' %}
-                    <i class="far fa-arrow-to-bottom"></i>
-                {% else %}
-                {% endif %}
+                {% find_arrow 'rating' %}
             </a></th>
             <th scope="col">Actions</th>
             </tr>
@@ -120,6 +71,7 @@
                 {% if permission_delete == True %}
                     <a href="{% url 'book-delete' book.pk %}"><i class="fas fa-trash"></i></a>
                 {% endif %}
+                <a href="{% url 'cart:add-to-cart' %}?book={{ book.pk }}"><i class="fas fa-cart-plus"></i></a>
                 </td>
             </tr>
         {% endfor %}

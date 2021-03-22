@@ -32,22 +32,38 @@
 
 <div class="row">
 
+{% for object_book in objects_book_list %}
+
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            {% if object_book.image %}
+                <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ object_book.image.url }}" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><title>{{ object_book.name }}</title><rect width="100%" height="100%" fill="#55595c"/>
+            {% else %}
+            <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><title>{{ object_book.name }}</title><rect width="100%" height="100%" fill="#55595c"/>
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ object_book.name }}</h5>
+                <p class="card-text">
+                    Author {{ object_book.author }}<br>
+                    Genre {{ object_book.genre }}<br>
+                    Publisher {{ object_book.publisher }}<br>
+                </p>
+                <a href="{% url 'cart:add-to-cart' %}?book={{ object_book.pk }}" class="btn btn-primary">Add to cart</a>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
 {% for object_author in objects_author_list %}
 
 <div class="col-md-4">
     <div class="card mb-4 shadow-sm">
-        <!-- {% if object_author.image %}
-            <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="{{ object_author.image.url }}" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><title>{{ object_book.name }}</title><rect width="100%" height="100%" fill="#55595c"/>
-        {% else %}
-        <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"><title>{{ object_book.name }}</title><rect width="100%" height="100%" fill="#55595c"/>
-        {% endif %} -->
         <div class="card-body">
             <h5 class="card-title">{{ object_author.last_name }} {{ object_author.first_name }}</h5>
             <p class="card-text">
                 Date of birth {{ object_author.date_of_birth }}<br>
                 Address {{ object_author.address }}<br>
             </p>
-            <a href="{% url 'autor-detail' object_author.pk %}" class="btn btn-primary">Go to detail</a>
         </div>
     </div>
 </div>

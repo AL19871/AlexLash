@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'books',
     'accs',
+    'order',
+    'cart',
+    'customer',
     'crispy_forms'
 ]
 
@@ -129,3 +131,5 @@ LOGIN_REDIRECT_URL = '/'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+COMPANY_NAME = 'BOOKS'

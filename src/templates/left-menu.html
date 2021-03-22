@@ -1,30 +1,20 @@
+{% load book_tags %}
 <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-  <a class="navbar-brand" href="{% url 'home-page' %}">BOOKS</a>
+  <a class="navbar-brand" href="{% url 'home-page' %}">{% company_name %}</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url 'home-page' %}">Home</a>
-      </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">References</a>
         <div class="dropdown-menu" aria-labelledby="dropdown01">
           <a class="dropdown-item" href="{% url 'books-list' %}">Books</a>
-          {% if permission_author_view == True %}
-            <a class="dropdown-item" href="{% url 'autors-list' %}">Autors</a>
-          {% endif %}
-          {% if permission_genre_view == True %}
-            <a class="dropdown-item" href="{% url 'genres-list' %}">Genres</a>
-          {% endif %}
-          {% if permission_seria_view == True %}
-            <a class="dropdown-item" href="{% url 'series-list' %}">Series</a>
-          {% endif %}
-          {% if permission_publisher_view == True %}
-            <a class="dropdown-item" href="{% url 'publishers-list' %}">Publishers</a>
-          {% endif %}
+          <a class="dropdown-item" href="{% url 'autors-list' %}">Autors</a>
+          <a class="dropdown-item" href="{% url 'genres-list' %}">Genres</a>
+          <a class="dropdown-item" href="{% url 'series-list' %}">Series</a>
+          <a class="dropdown-item" href="{% url 'publishers-list' %}">Publishers</a>
           {% if permission_address_view == True %}
             <a class="dropdown-item" href="{% url 'addresses-list' %}">Addresses</a>
           {% endif %}
@@ -40,8 +30,21 @@
           <input name='q' class="form-control mr-sm-2" type="text" placeholder="{{ q }}" aria-label="Search">
         </form>
       {% endif %}
+      {% if permission_login == True %}
+      <a href="{% url 'customer:profile' %}"><button type="button" class="btn btn-outline-info">PROFILE</button></a>
+      {% endif %}
+      <a href="{% url 'cart:add-to-cart' %}"><button type="button" class="btn btn-outline-primary">CART</button></a>
+      <a href="{% url 'customer:registration' %}"><button type="button" class="btn btn-outline-secondary">REGISTRATION</button></a>
+      {% if permission_order_view == True %}
+      <a href="{% url 'order:order-list' %}"><button type="button" class="btn btn-outline-light">ORDERS</button></a>
+      {% endif %}
+      {% if permission_userprofile_view == True %}
+      <a href="{% url 'customer:profile-list' %}"><button type="button" class="btn btn-outline-primary">PROFILE LIST</button></a>
+      {% endif %}
       <a href="{% url 'my-login' %}"><button type="button" class="btn btn-outline-danger">LOG IN</button></a>
-      <a href="{% url 'my-logout' %}"><button type="button" class="btn btn-outline-primary">LOG OUT</button></a>
+      {% if request.user.is_authenticated == True %}
+        <a href="{% url 'my-logout' %}"><button type="button" class="btn btn-outline-primary">LOG OUT</button></a>
+      {% endif %}
     </form>
   </div>
 </nav>

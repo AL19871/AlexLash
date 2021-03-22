@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load book_tags %}
+{% load crispy_forms_tags %}
+
+{% block title %} Cart {% endblock title %}
+
+{% block main_body %}
+<form action="{% url 'cart:recalculate-to-cart' %}" method="GET">
+    {{ form|crispy}}
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+            <th scope="col"><a href="?field=book&{{ sort_form_new }}">Name
+                {% find_arrow 'book' %}
+            </a></th>
+            <th scope="col"><a href="?field=quantity&{{ sort_form_new }}">Quantity
+                {% find_arrow 'quantity' %}
+            </a></th>
+            <th scope="col"><a href="?field=price&{{ sort_form_new }}">Price
+                {% find_arrow 'price' %}
+            </a></th>
+            <th scope="col">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for object_book_in_cart in book_list %}
+            <tr>
+                <td><a href="{% url 'book-detail' object_book_in_cart.book.pk %}">{{ object_book_in_cart.book.name }}</a></td>
+                <td><input type="number" min=0 name="{{ object_book_in_cart.pk }}" value="{{ object_book_in_cart.quantity }}"></td>
+                <td>{{ object_book_in_cart.book.cost }}</td>
+                <td>{{ object_book_in_cart.total_summ }}</td>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tr>
+            <td colspan="3">Total</td>
+            <td>{{ object.total_summ }}</td>
+        </tr>
+    </table>
+    <button type="submit" name="btn" class="btn btn-success" value="recalculate">Recalculate</button>
+    <button type="submit" name="btn" class="btn btn-primary" value="checkout">Checkout</button>
+</form>
+{% endblock main_body %}

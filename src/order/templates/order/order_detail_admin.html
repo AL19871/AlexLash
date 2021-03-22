@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %} Orders {% endblock title %}
+
+{% block main_body %}
+    <h1>Address {{ object.address }}</h1>
+    Phone {{ object.phone }}<br>
+    Status {{ object.status }}<br>
+    Date of create {{ object.date_of_create }}<br>
+    Date of update {{ object.date_of_update }}<br>
+    {% if permission == True %}
+        <a href="{% url 'order:order-list' %}"><button type="button" class="btn btn-light">All orders</button></a>
+    {% endif %}
+{% endblock main_body %}

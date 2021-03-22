@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load book_tags %}
+{% load crispy_forms_tags %}
+
+{% block title %} User profile {% endblock title %}
+
+{% block main_body %}
+
+<form action="{% url 'customer:profile-update' %}" method="GET">
+    {% csrf_token %}
+    {{ form|crispy}}
+    Login {{ object.user.username }}<br>
+    Email {{ object.user.email }}<br>
+    First name {{ object.user.first_name }}<br>
+    Last name {{ object.user.last_name }}<br>
+    Group {% for user_group in object.user.groups.all %} {{ user_group }} {% endfor %}<br>
+    <br>
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+            <th scope="col"><a href="?field=pk&{{ sort_form_new }}">Number
+                {% find_arrow 'pk' %}
+            </a></th>
+            <th scope="col"><a href="?field=address&{{ sort_form_new }}">Address
+                {% find_arrow 'address' %}
+            </a></th>
+            <th scope="col"><a href="?field=phone&{{ sort_form_new }}">Phone
+                {% find_arrow 'phone' %}
+            </a></th>
+            <th scope="col"><a href="?field=status&{{ sort_form_new }}">Status
+                {% find_arrow 'status' %}
+            </a></th>
+            <th scope="col"><a href="?field=date_of_create&{{ sort_form_new }}">Date of create
+                {% find_arrow 'date_of_create' %}
+            </a></th>
+            <th scope="col"><a href="?field=date_of_update&{{ sort_form_new }}">Date of update
+                {% find_arrow 'date_of_update' %}
+            </a></th>
+            <th scope="col">Total</th>
+            <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for object_order in userprofile_order_list %}
+                <tr>
+                    <td>{{ object_order.pk }}</td>
+                    <td>{{ object_order.address }}</td>
+                    <td>{{ object_order.phone }}</td>
+                    <td>{{ object_order.status }}</td>
+                    <td>{{ object_order.date_of_create }}</td>
+                    <td>{{ object_order.date_of_update }}</td>
+                    <td>{{ object_order.total_summ }}</td>
+                    <td>
+                    <button type="submit" name="btn_update" class="btn btn-info" value="{{ object_order.pk }}">Update</button>
+                    <button type="submit" name="btn_cancel" class="btn btn-danger" value="{{ object_order.pk }}">Cancel</button>
+                    {% if permission_edit == True %}
+                        <button type="submit" name="btn_finish" class="btn btn-primary" value="{{ object_order.pk }}">Finish</button>
+                    {% endif %}
+                    {% if permission_delete == True %}
+                        <button type="submit" name="btn_delete" class="btn btn-dark" value="{{ object_order.pk }}">Delete</button>
+                    {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="submit" name="btn_save" class="btn btn-success" value="submit">Save</button>
+</form>
+
+{% endblock main_body %}

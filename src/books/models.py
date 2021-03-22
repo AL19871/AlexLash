@@ -260,7 +260,7 @@ class BooksList(models.Model):
 
     rating = models.CharField(max_length=15,
         verbose_name = "Book's rating",
-        choices = FORMAT_TYPES,
+        choices = RATING_TYPES,
         null = True,
         blank = True)
 

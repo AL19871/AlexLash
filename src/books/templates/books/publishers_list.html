@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load book_tags %}
 
 {% block title %} Publishers {% endblock title %}
 
@@ -9,12 +10,7 @@
             <tr>
             <th scope="col">#</th>
             <th scope="col"><a href="?field=name&{{ sort_form_new }}">Name
-                {% if field_to_sort == 'name' and direction_to_sort == 'down' %}
-                    <i class="fad fa-arrow-to-top"></i>
-                {% elif field_to_sort == 'name' and direction_to_sort == 'up' %}
-                    <i class="far fa-arrow-to-bottom"></i>
-                {% else %}
-                {% endif %}
+                {% find_arrow 'name'%}
             </a></th>
             <th scope="col">Address</th>
             <th scope="col">Description</th>

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load book_tags %}
 
 {% block title %} Autors {% endblock title %}
 
@@ -8,23 +9,17 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col"><a href="?field=city&{{ sort_form_new }}">City 
-                    {% if field_to_sort == 'city' and direction_to_sort == 'down' %}
-                        <i class="fad fa-arrow-to-top"></i>
-                    {% elif field_to_sort == 'city' and direction_to_sort == 'up' %}
-                        <i class="far fa-arrow-to-bottom"></i>
-                    {% else %}
-                    {% endif %}
+                    {% find_arrow 'city'%}
                 </a></th>
                 <th scope="col"><a href="?field=street&{{ sort_form_new }}">Street
-                    {% if field_to_sort == 'street' and direction_to_sort == 'down' %}
-                        <i class="fad fa-arrow-to-top"></i>
-                    {% elif field_to_sort == 'street' and direction_to_sort == 'up' %}
-                        <i class="far fa-arrow-to-bottom"></i>
-                    {% else %}
-                    {% endif %}
+                    {% find_arrow 'street'%}
                 </a></th>
-                <th scope="col">Block</th>
-                <th scope="col">House</th>
+                <th scope="col"><a href="?field=block&{{ sort_form_new }}">Block
+                    {% find_arrow 'block'%}
+                </a></th>
+                <th scope="col"><a href="?field=house&{{ sort_form_new }}">House
+                    {% find_arrow 'house'%}
+                </a></th>
                 <th scope="col">Actions</th>
             </tr>
         </thead>

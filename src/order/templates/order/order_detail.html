@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load book_tags %}
+{% load crispy_forms_tags %}
+
+{% block title %} Order {% endblock title %}
+
+{% block main_body %}
+
+<form action="{% url 'order:order-submit' %}" method="GET">
+    {{ form|crispy}}
+    Customer {{ object.cart.customer }}<br>
+    <br>
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+            <th scope="col"><a href="?field=book&{{ sort_form_new }}">Name
+                {% find_arrow 'book' %}
+            </a></th>
+            <th scope="col"><a href="?field=quantity&{{ sort_form_new }}">Quantity
+                {% find_arrow 'quantity' %}
+            </a></th>
+            <th scope="col"><a href="?field=price&{{ sort_form_new }}">Price
+                {% find_arrow 'price' %}
+            </a></th>
+            <th scope="col">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for object_book_in_cart in book_list %}
+            <tr>
+                <td>{{ object_book_in_cart.book.name }}</td>
+                <td>{{ object_book_in_cart.quantity }}"</td>
+                <td>{{ object_book_in_cart.book.cost }}</td>
+                <td>{{ object_book_in_cart.total_summ }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tr>
+            <td colspan="3">Total</td>
+            <td>{{ object.total_summ }}</td>
+        </tr>
+    </table>
+    <button type="submit" name="btn" class="btn btn-success" value="submit">Sudmit</button>
+    <button type="submit" name="btn" class="btn btn-danger" value="cancel">Cancel</button>
+</form>
+
+{% endblock main_body %}
